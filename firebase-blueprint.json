@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A flute instrument available for purchase.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the flute." },
+        "price": { "type": "number", "description": "The price in USD." },
+        "category": { "type": "string", "description": "The category of the flute (e.g., Professional, Student)." },
+        "image": { "type": "string", "description": "URL to the product image." },
+        "description": { "type": "string", "description": "Detailed description of the instrument." },
+        "featured": { "type": "boolean", "description": "Whether the product is featured on the home page." },
+        "rating": { "type": "number", "description": "Average customer rating (0-5)." },
+        "specs": { "type": "array", "items": { "type": "string" }, "description": "List of technical specifications." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the product was added." }
+      },
+      "required": ["name", "price", "category", "image"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer's purchase order.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The ID of the user who placed the order." },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "quantity": { "type": "integer" },
+              "image": { "type": "string" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "paymentMethod": { "type": "string", "description": "The method of payment (e.g., Google Pay, Credit Card)." },
+        "paymentId": { "type": "string", "description": "The transaction ID from the payment provider." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "items", "totalAmount", "status", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "A user's profile information.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role", "createdAt"]
+    },
+    "Wishlist": {
+      "title": "Wishlist",
+      "description": "A user's saved products.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productIds": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productIds", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "products": { "schema": "Product", "description": "Collection of available flutes." },
+    "orders": { "schema": "Order", "description": "Collection of customer orders." },
+    "users": { "schema": "User", "description": "Collection of user profiles." },
+    "wishlist": { "schema": "Wishlist", "description": "Collection of user wishlists." }
+  }
+}
